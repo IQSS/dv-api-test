@@ -16,11 +16,11 @@ pip install -r requirements/base.txt
 
 ### Create test dataverses
 
-"""python
+```python
 cd ~/dv-api-test/scripts
 # This uses the dv names listed in ~/dv-api-test/data_in/vdc.csv
 python add_vdc.py
-"""  
+``` 
 
 ### Delete the test dataverses
 

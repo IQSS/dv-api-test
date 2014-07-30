@@ -18,16 +18,16 @@ see also https://redmine.hmdc.harvard.edu/issues/3246
    <!-- related publications -->
    <dcterms:isReferencedBy holdingsURI="http://placeholder/{{ study.get_mock_doi() }}" agency="DOI" IDNo="{{ study.get_mock_doi() }}">Peets, J., &amp; Stumptown, J. (2013). Toasting at Home. New England Journal of Coffee, 3(1), 22-34.</dcterms:isReferencedBy>
    <!-- production date -->
-   <dcterms:date>2013-07-11</dcterms:date>
+   <dcterms:date>{{ study.releasetime[:10] }}</dcterms:date>
    <!-- Other Identifier for the data in this study (or potentially global id if unused) -->
    <!--
    <dcterms:identifier>{{ study.get_mock_doi() }}</dcterms:identifier>
    -->
-   <dcterms:description>Considerations before you start roasting your own coffee at home.</dcterms:description>
+   <dcterms:description>{{ study.abstract_text }}</dcterms:description>
    <!-- keywords -->
-   <dcterms:subject>coffee</dcterms:subject>
-   <dcterms:subject>beverage</dcterms:subject>
-   <dcterms:subject>caffeine</dcterms:subject>
+   <dcterms:subject>statistics</dcterms:subject>
+   <dcterms:subject>dv testing</dcterms:subject>
+   {#<dcterms:subject>caffeine</dcterms:subject>#}
    <!-- geographic coverage -->
    <dcterms:coverage>United States</dcterms:coverage>
    <!-- geographicCoverage doesn't allowmultiples. Is this a backward-incompatible change?
@@ -36,9 +36,9 @@ see also https://redmine.hmdc.harvard.edu/issues/3246
    <!-- kind of data -->
    <dcterms:type>aggregate data</dcterms:type>
    <!-- List of sources of the data collection-->
-   <dcterms:source>Stumptown, Jane. 2011. Home Roasting. Bodum Press.</dcterms:source>
+   <dcterms:source>{% if study.author_affiliation %}{{ study.author_affiliation }}{% else %}{{ study.producer_name}}{% if study.producer_affiliation %}, {{ study.producer_affiliation }}{% endif %} {% endif %}. {{ study.releasetime[:4] }}.</dcterms:source>
    <!-- restrictions -->
    <dcterms:rights>Creative Commons CC-BY 3.0 (unported) http://creativecommons.org/licenses/by/3.0/</dcterms:rights>
    <!-- related materials -->
-   <dcterms:relation>Feets, John. 2010. Roasting Coffee at the Coffee Shop. Coffeemill Press</dcterms:relation>
+   {#<dcterms:relation>Feets, John. 2010. Roasting Coffee at the Coffee Shop. Coffeemill Press</dcterms:relation>#}
 </entry>

@@ -1,5 +1,6 @@
 import os, sys
 import csv
+import string
 
 class DatasetManager:
     def __init__(self, datafile):
@@ -38,6 +39,8 @@ class DatasetInfo:
     
     AUTHOR_ATTRIBUTE_NAME = 'author'
 
+    
+
     def __init__(self, row):
         if not type(row) is list:
             raise Exception('row is not a list')
@@ -45,15 +48,19 @@ class DatasetInfo:
         self.authors = []
         
         for idx, attr in enumerate(self.table_attrs):
-            
-            if attr == DatasetInfo.AUTHOR_ATTRIBUTE_NAME:
-                self.authors.append(row[idx].decode('utf-8'))
-                
+                            
             if (idx+1) > len(row): 
                 self.__dict__[attr] = None
-            else:
-                self.__dict__[attr] = row[idx].decode('utf-8')
+                return
+            
+            val = self.strip_non_ascii(row[idx])#.decode('utf-8') 
+            self.__dict__[attr] = val
+            
+            if attr == DatasetInfo.AUTHOR_ATTRIBUTE_NAME:
+                self.authors.append(val)            
     
+    def strip_non_ascii(self, val):
+        return filter(lambda x: x in string.printable, val)
     
     def get_mock_doi(self):
         return '%s%s-%s/%s:%s' % (self.protocol, self.authority, self.studyid, self.version, self.study_id, )

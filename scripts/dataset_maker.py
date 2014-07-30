@@ -3,6 +3,7 @@ import os, sys
 
 from jinja2 import Template
 from jinja2 import Environment, PackageLoader
+import requests
 
 from msg_util import *
 from dataverse_api_link import DataverseAPILink
@@ -28,10 +29,10 @@ class DatasetMaker:
         self.dataset_manager = DatasetManager(self.data_fname)
         self.dataset_manager.process_rows()
         
-    def create_dataset(atom_entry_fname, parent_dataverse_alias=None):
+    def create_dataset(self, atom_xml, parent_dataverse_alias=None):
 
-        if not os.path.isfile(atom_entry_fname):
-            msg('File not found!  %s' % atom_entry_fname)
+        if not atom_xml:
+            msg('No atom_xml')
             return
 
         # Format the url
@@ -42,15 +43,13 @@ class DatasetMaker:
         # prepare headers
         headers = {'Content-Type': 'application/atom+xml'}
 
-        # open file
-        file_data = open(atom_entry_fname, 'rb').read()        
-
         # format requests    
-        r = requests.post(url, headers=headers, data=file_data, auth=self.dv_auth)
+        r = requests.post(url, headers=headers, data=atom_xml, auth=self.dv_auth)
 
         # check response
         if r.status_code == 201:
-            prettyprint_xml(r.text)
+            #prettyprint_xml(r.text)
+            msg(r.text)
             msg(r.status_code)
         else:
             msg('ERROR')
@@ -81,13 +80,15 @@ class DatasetMaker:
             if ds_cnt > end_cnt: break
             
             print (ds.title, ds.authors)
-            msg(self.get_atom_xml(ds))
-        return
+            atom_xml = self.get_atom_xml(ds)
+            msgt(atom_xml)
+            self.create_dataset(atom_xml, 'root')
+            
        
             
 if __name__=='__main__':
-    dm = DatasetMaker(dv_server='https://dvn-build.hmdc.harvard.edu'\
+    dm = DatasetMaker(dv_server='http://dvn-build.hmdc.harvard.edu'\
                         , dv_auth=('pete', 'pete')\
                         , data_fname = os.path.join('..', 'data_in', 'dataset_info.csv')\
                     )
-    dm.add_dataverses(1,1)
+    dm.add_dataverses(49,49)

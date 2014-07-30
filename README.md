@@ -5,12 +5,13 @@ Currently "Scratch" code to use the dataverse api
 
 ### Setup 
 
-+ pip install 
+##### Via pip install 
 
 ```
 cd dv-api-test
 pip install -r requirements/base.txt
 ```
+
 ##### **Recommended**
 
 + [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/install.html#basic-installation)

@@ -23,7 +23,7 @@ see also https://redmine.hmdc.harvard.edu/issues/3246
    <!--
    <dcterms:identifier>{{ study.get_mock_doi() }}</dcterms:identifier>
    -->
-   <dcterms:description>{{ study.abstract_text }}</dcterms:description>
+   <dcterms:description>description {# { study.abstract_text } #}</dcterms:description>
    <!-- keywords -->
    <dcterms:subject>statistics</dcterms:subject>
    <dcterms:subject>dv testing</dcterms:subject>

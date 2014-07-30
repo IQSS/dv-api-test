@@ -91,4 +91,4 @@ if __name__=='__main__':
                         , dv_auth=('pete', 'pete')\
                         , data_fname = os.path.join('..', 'data_in', 'dataset_info.csv')\
                     )
-    dm.add_dataverses(49,49)
+    dm.add_dataverses(48,300)

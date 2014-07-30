@@ -64,9 +64,9 @@ def add_dataverses(start_cnt=0, end_cnt=100):
     
     vdc_input = os.path.join('..', 'data_in', 'vdc.csv')
     with open(vdc_input, 'rb') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=';', quotechar='"')
+        vdc_reader = csv.reader(csvfile, delimiter=';', quotechar='"')
         cnt = 0
-        for row in spamreader:
+        for row in vdc_reader:
             cnt +=1
             if cnt==1: continue     # skip header row
             

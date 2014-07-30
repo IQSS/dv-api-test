@@ -34,9 +34,8 @@ class DvInfo:
         return dv_params
     
 
-def delete_dataverses(start_cnt=0, end_cnt=100):
+def delete_dataverses(server_with_api, start_cnt=0, end_cnt=100):
     #DELETE http://{{SERVER}}/api/dvs/{{id}}?key={{username}}
-    server_with_api = 'https://dvn-build.hmdc.harvard.edu'
     dat = DataverseAPILink(server_with_api, use_https=False, apikey='pete')
     
     vdc_input = os.path.join('..', 'data_in', 'vdc.csv')
@@ -48,6 +47,7 @@ def delete_dataverses(start_cnt=0, end_cnt=100):
             if cnt==1: continue     # skip header row
             
             dv = DvInfo(row)
+            
             msg('name: %s alias: %s description: %s ' % (dv.name, dv.alias, dv.dvndescription))
                 #print ', '.join(row)
             
@@ -58,8 +58,8 @@ def delete_dataverses(start_cnt=0, end_cnt=100):
     
     
     
-def add_dataverses(start_cnt=0, end_cnt=100):
-    server_with_api = 'https://dvn-build.hmdc.harvard.edu'
+def add_dataverses(server_with_api, start_cnt=0, end_cnt=100):
+
     dat = DataverseAPILink(server_with_api, use_https=False, apikey='pete')
     
     vdc_input = os.path.join('..', 'data_in', 'vdc.csv')
@@ -71,6 +71,7 @@ def add_dataverses(start_cnt=0, end_cnt=100):
             if cnt==1: continue     # skip header row
             
             dv = DvInfo(row)
+            
             msg('name: %s alias: %s description: %s ' % (dv.name, dv.alias, dv.dvndescription))
                 #print ', '.join(row)
             
@@ -80,5 +81,6 @@ def add_dataverses(start_cnt=0, end_cnt=100):
                 break
             
 if __name__=='__main__':
-    add_dataverses(1, 700)
-    #delete_dataverses(3,700)
+    server_with_api = 'https://dvn-build.hmdc.harvard.edu'
+    add_dataverses(server_with_api, 1, 700)
+    #delete_dataverses(server_with_api, 3,700)

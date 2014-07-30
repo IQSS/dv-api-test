@@ -31,7 +31,7 @@ class DatasetManager:
                     self.datasets.append(current_dataset)
                     # Set the new one
                     current_dataset = new_ds
-        print len(self.datasets)
+        #print len(self.datasets)
             
             
 class DatasetInfo:
@@ -71,11 +71,13 @@ class DatasetInfo:
         author_name = dataset_info.__dict__.get(DatasetInfo.AUTHOR_ATTRIBUTE_NAME, None)
         if author_name is None:
             return
-        self.authors.append(author_name)
+            
+        if not author_name in self.authors:
+            self.authors.append(author_name)
         
     @staticmethod
     def are_datasets_same_except_author(ds1, ds2):
-        compare_attrs = ["protocol", "study_id", "version", "authority", "studyid", "abstract_text"]
+        compare_attrs = ["protocol", "study_id", "title", "version", "authority", "studyid", "abstract_text", ]
         for attr in compare_attrs:
             if not ds1.__dict__.get(attr) == ds2.__dict__.get(attr):
                 return False

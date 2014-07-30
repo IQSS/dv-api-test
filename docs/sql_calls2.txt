@@ -33,4 +33,5 @@ select s.protocol,
     and abs.metadata_id = m.id
     and sv.version = 1
     order by sv.study_id,  sv.version
-    LIMIT 1000;
+    LIMIT 2000
+    OFFSET 10000;

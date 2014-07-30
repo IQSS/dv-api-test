@@ -11,12 +11,14 @@ from dataset_info import DatasetManager, DatasetInfo
 
 class DatasetMaker:
     
-    def __init__(self, dv_server, dv_auth, data_fname):
+    def __init__(self, dv_server, dv_auth, data_fname, dataverse_alias):
         self.jinja_env = Environment(loader=PackageLoader('dataset_maker', 'templates'))
         
         self.dv_server = dv_server
         self.dv_auth = dv_auth
         self.data_fname = data_fname
+        self.dataverse_alias = dataverse_alias
+        
         self.dataset_manager = None
         if not os.path.isfile(data_fname):
             raise Exception('This file does not exist! %s' % data_fname)
@@ -68,27 +70,48 @@ class DatasetMaker:
 
         atom_xml = template.render(template_params)
         return atom_xml
+    
+    def get_num_datasets(self):
+        if self.dataset_manager and self.dataset_manager.datasets:
+            return len(self.dataset_manager.datasets)
+        return 0
         
-    def add_dataverses(self, start_cnt=0, end_cnt=100):
+    def add_datasets(self, start_cnt=0, end_cnt=100):
         if not self.dataset_manager:
             raise Exception('dataset_manager is None')
 
         ds_cnt = 0
+        msgt('Number of datasets: %s' % len(self.dataset_manager.datasets))
+        #return
         for ds in self.dataset_manager.datasets:
             ds_cnt +=1
-            if ds_cnt < start_cnt: continue
-            if ds_cnt > end_cnt: break
+            msgt('(%s) %s %s' % (ds_cnt, ds.title, ds.authors))
+            if ds_cnt < start_cnt: 
+                msg('skip dataset')
+                continue
+            if ds_cnt > end_cnt: 
+                msg('stop here')
+                break
             
-            print (ds.title, ds.authors)
+            #print (ds.title, ds.authors)
             atom_xml = self.get_atom_xml(ds)
-            msgt(atom_xml)
-            self.create_dataset(atom_xml, 'root')
+            #msgt(atom_xml)
+            self.create_dataset(atom_xml, self.dataverse_alias)
             
        
             
 if __name__=='__main__':
     dm = DatasetMaker(dv_server='http://dvn-build.hmdc.harvard.edu'\
                         , dv_auth=('pete', 'pete')\
-                        , data_fname = os.path.join('..', 'data_in', 'dataset_info.csv')\
+                        , data_fname = os.path.join('..', 'data_in', 'dataset_info7.csv')\
+                        , dataverse_alias='root'
                     )
-    dm.add_dataverses(48,300)
+    print (dm.get_num_datasets())
+    #msgx('done')
+    #dm.add_datasets(1,500)
+    for x in range(1, 2):
+        dm.add_datasets(1,500)
+    #    dm.add_datasets(1,70)
+    
+    
+    

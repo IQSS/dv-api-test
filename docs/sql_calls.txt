@@ -1,0 +1,101 @@
+select id, name, alias, visibility, dvndescription, lastname, firstname, affiliation from vdc where restricted=false order by id desc;
+
+select * from vdc;
+--------------------------
+
+
+select s.protocol,
+  sv.study_id as study_id,
+  sv.version,
+  s.authority,
+  s.studyid,
+  abs.text,
+  a.name as author,
+  a.affiliation author_affiliation,
+   m.title, m.unf, 
+   sv.releasetime,
+   p.name as producer_name,
+   p.affiliation as producer_affiliation
+   from 
+   study as s, 
+   studyversion as sv,
+    metadata as m,
+    studyauthor as a,
+    studyrelstudy as rel,
+    studyproducer as p,
+    studyabstract as abs
+    
+    where sv.study_id = s.id 
+    and sv.metadata_id = m.id 
+    and sv.versionstate='RELEASED'
+    and a.metadata_id = m.id
+    and rel.metadata_id = m.id
+    and p.metadata_id = m.id
+    and abs.metadata_id = m.id
+    and sv.version = 1
+    order by sv.study_id,  sv.version
+    LIMIT 1000000;
+
+--------------------------
+
+select s.protocol,
+s.authority,
+s.studyid,
+ m.title, m.unf, sv.releasetime
+ from study as s, 
+ studyversion as sv,
+  metadata as m 
+  where sv.study_id = s.id 
+  and sv.metadata_id = m.id 
+  and sv.versionstate='RELEASED';
+  
+--------------------------------------
+
+select s.protocol,
+s.authority,
+s.studyid,
+a.name,
+a.affiliation,
+ m.title, m.unf, sv.releasetime
+ from study as s, 
+ studyversion as sv,
+  metadata as m,
+  studyauthor as a
+  where sv.study_id = s.id 
+  and sv.metadata_id = m.id 
+  and sv.versionstate='RELEASED'
+  and a.metadata_id = m.id;
+  
+  --------------------------------------
+  
+  select s.protocol,
+  sv.study_id as study_id,
+  sv.version,
+  s.authority,
+  s.studyid,
+  abs.text,
+  a.name as author,
+  a.affiliation author_affiliation,
+   m.title, m.unf, 
+   sv.releasetime,
+   p.name as producer_name,
+   p.affiliation as producer_affiliation
+   from 
+   study as s, 
+   studyversion as sv,
+    metadata as m,
+    studyauthor as a,
+    studyrelstudy as rel,
+    studyproducer as p,
+    studyabstract as abs
+    
+    where sv.study_id = s.id 
+    and sv.metadata_id = m.id 
+    and sv.versionstate='RELEASED'
+    and a.metadata_id = m.id
+    and rel.metadata_id = m.id
+    and p.metadata_id = m.id
+    and abs.metadata_id = m.id
+    LIMIT 1000;
+  
+  

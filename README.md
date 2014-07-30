@@ -13,7 +13,7 @@ pip install -r requirements/base.txt
 ```
 + Recommended: use [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/install.html#basic-installation)
 
-1.  
+
 ### Create test dataverses
 
 """python

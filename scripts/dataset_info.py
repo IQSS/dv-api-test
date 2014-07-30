@@ -45,14 +45,19 @@ class DatasetInfo:
         self.authors = []
         
         for idx, attr in enumerate(self.table_attrs):
+            
             if attr == DatasetInfo.AUTHOR_ATTRIBUTE_NAME:
-                self.authors.append(row[idx])
+                self.authors.append(row[idx].decode('utf-8'))
                 
             if (idx+1) > len(row): 
                 self.__dict__[attr] = None
             else:
-                self.__dict__[attr] = row[idx]
+                self.__dict__[attr] = row[idx].decode('utf-8')
     
+    
+    def get_mock_doi(self):
+        return '%s%s-%s/%s:%s' % (self.protocol, self.authority, self.studyid, self.version, self.study_id, )
+        
     def add_author(self, dataset_info):
         if dataset_info is None:
             return None

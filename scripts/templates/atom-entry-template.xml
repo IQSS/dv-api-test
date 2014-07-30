@@ -10,18 +10,18 @@ see also https://redmine.hmdc.harvard.edu/issues/3246
        xmlns:dcterms="http://purl.org/dc/terms/">
    <!-- some embedded metadata -->
    <dcterms:title>{{ study.title }}</dcterms:title>
-   {% for creator in study.authors %}   
+   {% for author in study.authors %}   
     <dcterms:creator>{{ author }}</dcterms:creator>
    {% endfor %}
    <!-- Producer with financial or admin responsibility of the data -->
-   <dcterms:publisher>Roasted State University</dcterms:publisher>
+   <dcterms:publisher>{% if study.author_affiliation %}{{ study.author_affiliation }}{% else %}{{ study.producer_name}}{% if study.producer_affiliation %}, {{ study.producer_affiliation }}{% endif %} {% endif %}</dcterms:publisher>
    <!-- related publications -->
-   <dcterms:isReferencedBy holdingsURI="http://dx.doi.org/10.1038/dvn3385" agency="DOI" IDNo="10.1038/dvn3385">Peets, J., &amp; Stumptown, J. (2013). Toasting at Home. New England Journal of Coffee, 3(1), 22-34.</dcterms:isReferencedBy>
+   <dcterms:isReferencedBy holdingsURI="http://placeholder/{{ study.get_mock_doi() }}" agency="DOI" IDNo="{{ study.get_mock_doi() }}">Peets, J., &amp; Stumptown, J. (2013). Toasting at Home. New England Journal of Coffee, 3(1), 22-34.</dcterms:isReferencedBy>
    <!-- production date -->
    <dcterms:date>2013-07-11</dcterms:date>
    <!-- Other Identifier for the data in this study (or potentially global id if unused) -->
    <!--
-   <dcterms:identifier>hdl:1XXZY.1/XYXZ</dcterms:identifier>
+   <dcterms:identifier>{{ study.get_mock_doi() }}</dcterms:identifier>
    -->
    <dcterms:description>Considerations before you start roasting your own coffee at home.</dcterms:description>
    <!-- keywords -->

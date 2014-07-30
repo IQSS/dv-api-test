@@ -7,6 +7,7 @@ Currently "Scratch" code to use the dataverse api
 
 ##### Via pip install 
 
++ Install pip: http://pip.readthedocs.org/en/latest/installing.html
 ```
 cd dv-api-test
 pip install -r requirements/base.txt

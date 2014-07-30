@@ -12,6 +12,9 @@ cd dv-api-test
 pip install -r requirements/base.txt
 ```
 + **Recommended**: use [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/install.html#basic-installation)
++ **I don't want to install pip**: Install the python packages directly
+    + [requests](http://docs.python-requests.org/en/latest/user/install/)
+    + [jinja](http://jinja.pocoo.org/docs/intro/#installation)
 + **I don't want to install virtualenv using sudo**: try this [stackoverflow code](http://stackoverflow.com/questions/9348869/how-to-install-virtualenv-without-using-sudo/15555989#15555989)
   + See [Issue #1](https://github.com/IQSS/dv-api-test/issues/1) for more details on how to do this
 

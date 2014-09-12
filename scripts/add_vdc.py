@@ -82,5 +82,5 @@ def add_dataverses(server_with_api, start_cnt=0, end_cnt=100):
             
 if __name__=='__main__':
     server_with_api = 'https://dvn-build.hmdc.harvard.edu'
-    add_dataverses(server_with_api, 1, 700)
+    add_dataverses(server_with_api, 1, 610)
     #delete_dataverses(server_with_api, 3,700)

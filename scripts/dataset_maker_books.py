@@ -7,7 +7,7 @@ import requests
 
 from msg_util import *
 from dataverse_api_link import DataverseAPILink
-from dataset_info import DatasetManager, DatasetInfo
+from dataset_info_books import DatasetManager, DatasetInfo
 
 class DatasetMaker:
     
@@ -56,18 +56,18 @@ class DatasetMaker:
         else:
             msg('ERROR')
             msg(r.status_code)
-            msg(r.text)        
+            #msg(r.text)        
     
     def get_atom_xml(self, dataset_info):
         if dataset_info is None:
-            return None
+            raise TypeError('dataset_info is not a DatasetInfo')
             
-        template = self.jinja_env.get_template('atom-entry-template.xml')
-
-        template_params = { 'study' : dataset_info\
-       
-                            }
-
+        template = self.jinja_env.get_template('atom-entry-template_books.xml')
+        #msgt(template)
+        
+        #params = dataset_info.get_dataset_params()
+        #msg(params)
+        template_params = { 'study' : dataset_info.get_study_obj_with_params() }
         atom_xml = template.render(template_params)
         return atom_xml
     
@@ -85,7 +85,7 @@ class DatasetMaker:
         #return
         for ds in self.dataset_manager.datasets:
             ds_cnt +=1
-            msgt('(%s) %s %s' % (ds_cnt, ds.title, ds.authors))
+            msgt('(%s) %s %s' % (ds_cnt, ds.title, ds.author))
             if ds_cnt < start_cnt: 
                 msg('skip dataset')
                 continue
@@ -101,18 +101,16 @@ class DatasetMaker:
        
             
 if __name__=='__main__':
-
     dm = DatasetMaker(dv_server='http://dvn-build.hmdc.harvard.edu'\
                         , dv_auth=('pete', 'pete')\
-                        , data_fname = os.path.join('..', 'data_in', 'dataset_info7.csv')\
+                        , data_fname = os.path.join('..', 'data_in', 'BX-CSV-Dump', 'BX-Books.csv')\
                         , dataverse_alias='root'
                     )
+    
     print (dm.get_num_datasets())
     #msgx('done')
     #dm.add_datasets(1,500)
-    for x in range(1, 2):
-        dm.add_datasets(1,500)
+    dm.add_datasets(16,15000)
     #    dm.add_datasets(1,70)
-    
     
     

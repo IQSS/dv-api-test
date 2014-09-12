@@ -6,7 +6,9 @@ class DatasetManager:
     def __init__(self, datafile):
         self.datafile = datafile
         self.datasets = []      # list of DatasetInfo objects
-        
+    
+    
+    
     def process_rows(self):     
         if not os.path.isfile(self.datafile):
             raise Exception('This file does not exist! %s' % self.datafile)

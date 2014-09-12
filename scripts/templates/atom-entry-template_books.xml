@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+modified from http://swordapp.github.io/SWORDv2-Profile/SWORDProfile.html#protocoloperations_editingcontent_metadata
+
+comments at https://docs.google.com/document/d/1Rn70XItfA6_mJ4JA3I7m4em0spfdXIIHhwkrgCl40uE/edit?usp=sharing
+
+see also https://redmine.hmdc.harvard.edu/issues/3246
+-->
+<entry xmlns="http://www.w3.org/2005/Atom"
+       xmlns:dcterms="http://purl.org/dc/terms/">
+   <!-- some embedded metadata -->
+   <dcterms:title>{{ study.title }}</dcterms:title>
+    <dcterms:creator>{{ study.author }}</dcterms:creator>
+   <!-- Producer with financial or admin responsibility of the data -->
+   <dcterms:publisher>{% if study.author_affiliation %}{{ study.author_affiliation }}{% else %}{{ study.producer_name}}{% if study.producer_affiliation %}, {{ study.producer_affiliation }}{% endif %} {% endif %}</dcterms:publisher>
+   <!-- related publications -->
+   <dcterms:isReferencedBy holdingsURI="http://placeholder/{{ study.mock_doi }}" agency="DOI" IDNo="{{ study.mock_doi }}">{{ study.author }} ({{ study.pub_year }}). {{ study.title }}. {{ study.producer_name }} {{ mock_doi }}.</dcterms:isReferencedBy>
+   <!-- production date -->
+   <dcterms:date>{{ study.releasetime[:10] }}</dcterms:date>
+   <!-- Other Identifier for the data in this study (or potentially global id if unused) -->
+   <!--
+   <dcterms:identifier>{{ study.mock_doi }}</dcterms:identifier>
+   -->
+   <dcterms:description>description {{ study.abstract_text|escape }}</dcterms:description>
+   <!-- keywords -->
+   <dcterms:subject>statistics</dcterms:subject>
+   <dcterms:subject>dv testing</dcterms:subject>
+   {#<dcterms:subject>caffeine</dcterms:subject>#}
+   <!-- geographic coverage -->
+   <dcterms:coverage>United States</dcterms:coverage>
+   <!-- geographicCoverage doesn't allowmultiples. Is this a backward-incompatible change?
+   <dcterms:coverage>Canada</dcterms:coverage>
+   -->
+   <!-- kind of data -->
+   <dcterms:type>aggregate data</dcterms:type>
+   <!-- List of sources of the data collection-->
+   <dcterms:source>{% if study.author_affiliation %}{{ study.author_affiliation }}{% else %}{{ study.producer_name}}{% if study.producer_affiliation %}, {{ study.producer_affiliation }}{% endif %} {% endif %}. {{ study.releasetime[:4] }}.</dcterms:source>
+   <!-- restrictions -->
+   <dcterms:rights>Creative Commons CC-BY 3.0 (unported) http://creativecommons.org/licenses/by/3.0/</dcterms:rights>
+   <!-- related materials -->
+   {#<dcterms:relation>Feets, John. 2010. Roasting Coffee at the Coffee Shop. Coffeemill Press</dcterms:relation>#}
+</entry>

@@ -80,6 +80,7 @@ read GLOBAL_ID
 
 curl --insecure -s https://$USERNAME:$PASSWORD@$DVN_SERVER/dvn/api/data-deposit/v1/swordv2/statement/study/$GLOBAL_ID
 
+curl --insecure -s https://pete:pete@dvn-build.hmdc.harvard.edu/dvn/api/data-deposit/v1/swordv2/statement/study/100
 
 echo "5. Publish a dataset"
 

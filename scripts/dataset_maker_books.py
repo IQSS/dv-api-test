@@ -1,5 +1,6 @@
 import csv
 import os, sys
+#from multiprocessing import Pool
 
 from jinja2 import Template
 from jinja2 import Environment, PackageLoader
@@ -9,11 +10,15 @@ from msg_util import *
 from dataverse_api_link import DataverseAPILink
 from dataset_info_books import DatasetManager, DatasetInfo
 
+from temp_aliases import get_random_alias
+
 class DatasetMaker:
     
     def __init__(self, dv_server, dv_auth, data_fname, dataverse_alias):
         self.jinja_env = Environment(loader=PackageLoader('dataset_maker', 'templates'))
         
+        if dv_server.endswith('/'):
+            dv_server = dv_server[0:-1]
         self.dv_server = dv_server
         self.dv_auth = dv_auth
         self.data_fname = data_fname
@@ -37,6 +42,8 @@ class DatasetMaker:
             msg('No atom_xml')
             return
 
+        parent_dataverse_alias = get_random_alias()
+            
         # Format the url
         url = '%s/dvn/api/data-deposit/v1/swordv2/collection/dataverse' % (self.dv_server)    
         if parent_dataverse_alias: 
@@ -55,8 +62,8 @@ class DatasetMaker:
             msg(r.status_code)
         else:
             msg('ERROR')
-            msg(r.status_code)
-            #msg(r.text)        
+            msg(r.text)        
+            msgx(r.status_code)
     
     def get_atom_xml(self, dataset_info):
         if dataset_info is None:
@@ -83,6 +90,7 @@ class DatasetMaker:
         ds_cnt = 0
         msgt('Number of datasets: %s' % len(self.dataset_manager.datasets))
         #return
+        #pool = Pool(processes=1)              # Start a worker processes.
         for ds in self.dataset_manager.datasets:
             ds_cnt +=1
             msgt('(%s) %s %s' % (ds_cnt, ds.title, ds.author))
@@ -96,12 +104,20 @@ class DatasetMaker:
             #print (ds.title, ds.authors)
             atom_xml = self.get_atom_xml(ds)
             #msgt(atom_xml)
+            #result = pool.apply_async(self.create_dataset\
+            #                , [atom_xml, self.dataverse_alias]\
+            #                , callback=self.done)
             self.create_dataset(atom_xml, self.dataverse_alias)
+    
+    def done(self):
+        msg('loaded')
             
        
             
 if __name__=='__main__':
-    dm = DatasetMaker(dv_server='http://dvn-build.hmdc.harvard.edu'\
+    db_server = 'http://localhost:8080'
+    #db_server = 'http://dvn-build.hmdc.harvard.edu'
+    dm = DatasetMaker(dv_server=db_server\
                         , dv_auth=('pete', 'pete')\
                         , data_fname = os.path.join('..', 'data_in', 'BX-CSV-Dump', 'BX-Books.csv')\
                         , dataverse_alias='root'
@@ -109,8 +125,9 @@ if __name__=='__main__':
     
     print (dm.get_num_datasets())
     #msgx('done')
-    #dm.add_datasets(1,500)
-    dm.add_datasets(16,15000)
+    dm.add_datasets(358,1000)
+    #dm.add_datasets(26083,28000)
+    #dm.add_datasets(19960,25000)
     #    dm.add_datasets(1,70)
     
-    
+

@@ -58,9 +58,9 @@ def delete_dataverses(server_with_api, start_cnt=0, end_cnt=100):
     
     
     
-def add_dataverses(server_with_api, start_cnt=0, end_cnt=100):
+def add_dataverses(server_with_api, apikey='8103ba01-098a-43b0-aec9-f05c9297a612', start_cnt=0, end_cnt=100):
 
-    dat = DataverseAPILink(server_with_api, use_https=False, apikey='pete')
+    dat = DataverseAPILink(server_with_api, use_https=False, apikey=apikey)
     
     vdc_input = os.path.join('..', 'data_in', 'vdc.csv')
     with open(vdc_input, 'rb') as csvfile:
@@ -81,6 +81,10 @@ def add_dataverses(server_with_api, start_cnt=0, end_cnt=100):
                 break
             
 if __name__=='__main__':
-    server_with_api = 'https://dvn-build.hmdc.harvard.edu'
-    add_dataverses(server_with_api, 1, 610)
+    #server_with_api = 'https://dvn-build.hmdc.harvard.edu'
+    server_with_api = 'http://localhost:8080'
+    apikey = '8103ba01-098a-43b0-aec9-f05c9297a612'
+    add_dataverses(server_with_api, apikey, 1, 610)
     #delete_dataverses(server_with_api, 3,700)
+    
+    #localhost:8080/api/index

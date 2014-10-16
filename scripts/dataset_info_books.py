@@ -5,7 +5,7 @@ import string
 
 class DatasetManager:
     
-    def __init__(self, datafile, start_row=1, end_row=100):
+    def __init__(self, datafile, start_row=1, end_row=40000):
         self.datafile = datafile
         self.datasets = []      # list of DatasetInfo objects
         self.start_row = start_row
@@ -60,7 +60,7 @@ class DatasetInfo:
                 , study_id="78622"\
                 , title=self.title
                 , mock_doi=self.isbn
-                , abstract_text='text datast for the book: %s' % self.title\
+                , abstract_text='test dataset for the book: %s' % self.title\
                 , protocol="doi"\
                 , authority="10.5072/FK2"\
                 , studyid=uuid.uuid1()\

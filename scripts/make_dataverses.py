@@ -119,7 +119,10 @@ def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='ro
     #return
     
     for cnt in range(start_num, start_num+num_dataverses):
-
+        if cnt > 0 and cnt % 50 == 0:
+            msgt('Sleeping for 3 seconds')
+            time.sleep(3)
+            
         dv_params = {
                      "alias":"ptest_%s" % cnt,
                      "name":"Paging Test (%s)" % cnt,
@@ -140,9 +143,9 @@ def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='ro
      
 if __name__=='__main__':
     # EXAMPLE
-    make_lots_of_dataverses(num_dataverses=1\
-                        , start_num=46\
+    make_lots_of_dataverses(num_dataverses=1000\
+                        , start_num=47\
                         , parent_dv_alias='hm_dv'\
-                        , publish_dataverses=True\
+                        , publish_dataverses=False\
                         )
     

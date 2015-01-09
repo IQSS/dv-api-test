@@ -15,13 +15,13 @@ import requests
 from msg_util import *
 import types # MethodType, FunctionType
 from datetime import datetime
-from single_api_spec import SingleAPISpec
+#from single_api_spec import SingleAPISpec
 import time
 
 def msg(s): print s
 def dashes(char='-'): msg(40*char)
 def msgt(s): dashes(); msg(s); dashes()
-def msgx(s): dashes('\/'); msg(s); dashes('\/'); sys.exit(0)
+def msgx(s): dashes('='); msg(s); dashes('='); sys.exit(0)
 
         
 class DataverseAPILink:
@@ -74,8 +74,11 @@ class DataverseAPILink:
         if r.status_code == 201:
             msg('Success!!')
         else:
-            msgt('Error')
-            msg(r.text)
+            dashes('- ')
+            msg('Parameters used to create dataverse: %s' % dv_params)
+            dashes('- ')
+            msg('Response Error: %s' % r.text)
+            msgx('Response Status code: %s' % r.status_code )
         #return self.make_api_call(url_str, self.HTTP_POST, params=dv_params, headers=headers)
         
         
@@ -103,14 +106,15 @@ class DataverseAPILink:
         if r.status_code == 200:
             msg('Success!  Published!')
         else:
+            dashes('- ')            
             msg('ERROR: %s' % r.text)
-            msg('Status code: %s' % r.status_code )
+            msgx('Status code: %s' % r.status_code )
 
 
 def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='root', publish_dataverses=False):
 
     server_with_api = 'https://dvn-build.hmdc.harvard.edu'
-    apikey = '4e65cfe6-a097-4402-86fd-cd973194c66b'
+    apikey = 'token-a097-token-86fd-token'
     
     dat = DataverseAPILink(server_with_api, apikey=apikey)
 
@@ -136,7 +140,7 @@ def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='ro
         msgt('(%s) Creating dataverse: "%s" alias: %s' % (cnt, dv_params['name'], dv_params['alias'] ))
         
         
-        dat.create_dataverse('hm_dv', dv_params)
+        dat.create_dataverse(parent_dv_alias, dv_params)
         if publish_dataverses:
             dat.publish_dataverse(dv_params.get('alias', 'no-alias found!'))
      
@@ -144,8 +148,8 @@ def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='ro
 if __name__=='__main__':
     # EXAMPLE
     make_lots_of_dataverses(num_dataverses=1000\
-                        , start_num=47\
-                        , parent_dv_alias='hm_dv'\
-                        , publish_dataverses=False\
+                            , start_num=305\
+                            , parent_dv_alias='root'\
+                            , publish_dataverses=True\
                         )
     

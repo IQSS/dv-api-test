@@ -16,6 +16,7 @@ from msg_util import *
 import types # MethodType, FunctionType
 from datetime import datetime
 from single_api_spec import SingleAPISpec
+import time
 
 def msg(s): print s
 def dashes(char='-'): msg(40*char)
@@ -393,39 +394,33 @@ class DataverseAPILink:
         url_str = self.get_server_name() + '/api/dvs/%s?key=%s' % (id_val, self.apikey) 
         return self.make_api_call(url_str, self.HTTP_DELETE)
 
-    
 
-    
-if __name__=='__main__':
-    import time
-    
-    #POST http://{{SERVER}}/api/dvs/{{identifier}}/actions/:publish?key={{apikey}}
-    
+def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='root'):
+
     server_with_api = 'https://dvn-build.hmdc.harvard.edu'
-    dat = DataverseAPILink(server_with_api, use_https=False, apikey='pete')
-    #dat.save_current_metadata('demo-data')
-    #sys.exit(0)
-    #dat.set_return_mode_string()
+    apikey = '4e65cfe6-a097-4402-86fd-cd973194c66b'
     
-    """ """
-    dv_params = {
-                    "alias":"hm_dv",
-                    "name":"Home, Home on the Dataverse 2",
-                    "affiliation":"Affiliation value",
-                    "contactEmail":"pete@mailinator.com",
-                    "permissionRoot":False,
-                    "description":"API testing"
-                    }
-    print dat.create_dataverse('root', dv_params)
-    #print dat.create_user('some_pw', dv_params)
-    """
-    print dat.get_dataverse_by_id_or_alias(5)
-    print dat.view_dataset_metadata_by_id_version(123, 57)
-    print dat.list_users()
-    print dat.list_roles()
-    print dat.list_datasets()
-    print dat.list_dataverses()
-    print dat.view_root_dataverse()
-    print dat.get_user_data(1)
-    print dat.list_metadata_blocks()
-    """
+    dat = DataverseAPILink(server_with_api, use_https=True, apikey=apikey)
+
+    for cnt in range(start_num, start_num+num_dataverses+1):
+        msgt('(%s) Creating dataverse' % cnt)
+        
+        dv_params = {
+                     "alias":"ptest_%s" % cnt,
+                     "name":"Paging Test (%s)" % cnt,
+                     "affiliation":"Affiliation value",
+                     "dataverseContacts": [
+                                     {"contactEmail": "pete@mailinator.com"}
+                                 ],
+                     "permissionRoot":True,
+                     "description":"Trying to reproduce paging bug"
+                 }
+        print dat.create_dataverse('hm_dv', dv_params)
+        print dat.publish_dataverse(dv_params.get('alias', 'no-alias found!'))
+     
+     
+if __name__=='__main__':
+    #import time
+    
+    make_lots_of_dataverses(num_dataverses=10, start_num=20, parent_dv_alias='hm_dv')
+    

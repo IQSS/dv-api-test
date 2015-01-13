@@ -7,7 +7,7 @@ from jinja2 import Environment, PackageLoader
 import requests
 
 from msg_util import *
-from dataverse_api_link import DataverseAPILink
+#from dataverse_api_link import DataverseAPILink
 from dataset_info_books import DatasetManager, DatasetInfo
 
 from temp_aliases import get_random_alias
@@ -70,8 +70,8 @@ class DatasetMaker:
             msgx(r.status_code)
     
     def get_atom_xml(self, dataset_info):
-        if dataset_info is None:
-            raise TypeError('dataset_info is not a DatasetInfo')
+        #print dataset_info.__class__.__name__
+        assert isinstance(dataset_info, DatasetInfo), "dataset_info must be a DatasetInfo object, not %s" % type(dataset_info)
             
         template = self.jinja_env.get_template('atom-entry-template_books.xml')
         #msgt(template)
@@ -129,7 +129,7 @@ if __name__=='__main__':
     
     print (dm.get_num_datasets())
     #msgx('done')
-    dm.add_datasets(15,5000)
+    dm.add_datasets(352,5000)
     #dm.add_datasets(26083,28000)
     #dm.add_datasets(19960,25000)
     #    dm.add_datasets(1,70)

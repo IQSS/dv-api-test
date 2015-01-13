@@ -42,24 +42,28 @@ class DatasetMaker:
             msg('No atom_xml')
             return
 
-        parent_dataverse_alias = get_random_alias()
+        if parent_dataverse_alias is None:
+            parent_dataverse_alias = self.dataverse_alias
+            #parent_dataverse_alias = get_random_alias()
             
         # Format the url
-        url = '%s/dvn/api/data-deposit/v1/swordv2/collection/dataverse' % (self.dv_server)    
+        api_url = '%s/dvn/api/data-deposit/v1/swordv2/collection/dataverse' % (self.dv_server)    
         if parent_dataverse_alias: 
-            url = '%s/%s' % (url, parent_dataverse_alias)
+            api_url = '%s/%s' % (api_url, parent_dataverse_alias)
 
         # prepare headers
         headers = {'Content-Type': 'application/atom+xml'}
 
         # format requests    
-        r = requests.post(url, headers=headers, data=atom_xml, auth=self.dv_auth)
+        msg('api_url: %s' % api_url)
+        r = requests.post(api_url, headers=headers, data=atom_xml, auth=self.dv_auth)
 
         # check response
         if r.status_code == 201:
             #prettyprint_xml(r.text)
-            msg(r.text)
+            #msg(r.text)
             msg(r.status_code)
+            msg('Dataset added!')
         else:
             msg('ERROR')
             msg(r.text)        
@@ -115,17 +119,17 @@ class DatasetMaker:
        
             
 if __name__=='__main__':
-    db_server = 'http://localhost:8080'
-    #db_server = 'http://dvn-build.hmdc.harvard.edu'
+    #db_server = 'http://localhost:8080'
+    db_server = 'https://dvn-build.hmdc.harvard.edu'
     dm = DatasetMaker(dv_server=db_server\
-                        , dv_auth=('pete', 'pete')\
+                        , dv_auth=('rprasad', 'abc123')\
                         , data_fname = os.path.join('..', 'data_in', 'BX-CSV-Dump', 'BX-Books.csv')\
-                        , dataverse_alias='root'
+                        , dataverse_alias='rp-dv'
                     )
     
     print (dm.get_num_datasets())
     #msgx('done')
-    dm.add_datasets(358,1000)
+    dm.add_datasets(15,5000)
     #dm.add_datasets(26083,28000)
     #dm.add_datasets(19960,25000)
     #    dm.add_datasets(1,70)

@@ -114,7 +114,8 @@ class DataverseAPILink:
 def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='root', publish_dataverses=False):
 
     server_with_api = 'https://dvn-build.hmdc.harvard.edu'
-    apikey = 'token-a097-token-86fd-token'
+    #server_with_api = 'http://127.0.0.1:8080'
+    apikey = 'a2117506-8848-4dd4-aec2-bbe166c9e656'
     
     dat = DataverseAPILink(server_with_api, apikey=apikey)
 
@@ -124,8 +125,9 @@ def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='ro
     
     for cnt in range(start_num, start_num+num_dataverses):
         if cnt > 0 and cnt % 50 == 0:
-            msgt('Sleeping for 3 seconds')
-            time.sleep(3)
+            sleep_secs = 7
+            msgt('Sleeping for %s seconds' % sleep_secs)
+            time.sleep(sleep_secs)
             
         dv_params = {
                      "alias":"ptest_%s" % cnt,
@@ -147,9 +149,9 @@ def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='ro
      
 if __name__=='__main__':
     # EXAMPLE
-    make_lots_of_dataverses(num_dataverses=1000\
-                            , start_num=305\
-                            , parent_dv_alias='root'\
-                            , publish_dataverses=True\
+    make_lots_of_dataverses(num_dataverses=10000\
+                            , start_num=1084\
+                            , parent_dv_alias='rp-dv'\
+                            , publish_dataverses=False\
                         )
     

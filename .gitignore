@@ -1,7 +1,9 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-/data_in/BX-CSV-Dump*
+/data_in/BX-CSV-Dump/BX-Users.csv
+/data_in/BX-CSV-Dump/BX-Book-Ratings.csv
+/data_in/*.zip
 # C extensions
 *.so
 

@@ -122,14 +122,14 @@ if __name__=='__main__':
     #db_server = 'http://localhost:8080'
     db_server = 'https://dvn-build.hmdc.harvard.edu'
     dm = DatasetMaker(dv_server=db_server\
-                        , dv_auth=('rprasad', 'abc123')\
+                        , dv_auth=('admin', 'admin')\
                         , data_fname = os.path.join('..', 'data_in', 'BX-CSV-Dump', 'BX-Books.csv')\
-                        , dataverse_alias='rp-dv'
+                        , dataverse_alias='root'
                     )
     
     print (dm.get_num_datasets())
     #msgx('done')
-    dm.add_datasets(352,5000)
+    dm.add_datasets(1,5)
     #dm.add_datasets(26083,28000)
     #dm.add_datasets(19960,25000)
     #    dm.add_datasets(1,70)

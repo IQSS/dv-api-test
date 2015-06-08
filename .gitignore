@@ -1,3 +1,6 @@
+scripts/settings.json
+.idea
+data_in/fake-files
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -10,9 +10,12 @@ Requires the python requests library:  http://docs.python-requests.org
 """
 import os
 import sys
+from pprint import pprint
 import json
 import requests
 from msg_util import *
+from settings_helper import get_setting
+from test_data_reader import TestDataReader
 import types # MethodType, FunctionType
 from datetime import datetime
 #from single_api_spec import SingleAPISpec
@@ -32,6 +35,8 @@ class DataverseAPILink:
         server_name = 'https://dvn-build.hmdc.harvard.edu'
         apikey = 'an-api-key-86fd-cd973194c66b'
         """
+        self.test_data_reader = TestDataReader()
+
         self.server_name = server_name
         if self.server_name.endswith('/'):
             self.server_name = self.server_name[:-1]
@@ -66,8 +71,10 @@ class DataverseAPILink:
         if not type(dv_params) is dict:
             msgx('dv_params is None')
             
-        url_str = self.server_name + '/api/dvs/%s?key=%s' % (parent_dv_alias_or_id, self.apikey)
-        headers = {'content-type': 'application/json'}    
+        url_str = self.server_name + '/api/dataverses/%s?key=%s' % (parent_dv_alias_or_id, self.apikey)
+        msg('url_str: %s' % url_str)
+
+        headers = {'content-type': 'application/json'}
         
         r = requests.post(url_str, data=json.dumps(dv_params), headers=headers)
         print 'status code:', r.status_code
@@ -93,8 +100,9 @@ class DataverseAPILink:
         if dv_id_or_name is None:
             msgx('dv_id_or_name is None')
         
-        url_str = self.server_name + '/api/dvs/%s/actions/:publish?key=%s' % (dv_id_or_name, self.apikey)
-        headers = {'content-type': 'application/json'}    
+        url_str = self.server_name + '/api/dataverses/%s/actions/:publish?key=%s' % (dv_id_or_name, self.apikey)
+        msg('url_str: %s' % url_str)
+        headers = {'content-type': 'application/json'}
         
         try:
             r = requests.post(url_str, headers=headers)
@@ -111,34 +119,22 @@ class DataverseAPILink:
             msgx('Status code: %s' % r.status_code )
 
 
-def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='root', publish_dataverses=False):
+def make_lots_of_dataverses(num_dataverses=100, parent_dv_alias='root', publish_dataverses=False):
 
-    server_with_api = 'https://dvn-build.hmdc.harvard.edu'
-    #server_with_api = 'http://127.0.0.1:8080'
-    apikey = 'a2117506-8848-4dd4-aec2-bbe166c9e656'
+    server_with_api = get_setting('DATAVERSE_URL')
+    apikey =  get_setting('API_TOKEN')
     
     dat = DataverseAPILink(server_with_api, apikey=apikey)
 
-    # publish dataverse and return
-    #dat.publish_dataverse('ptest_44')
-    #return
-    
-    for cnt in range(start_num, start_num+num_dataverses):
+    for cnt in range(1, num_dataverses+1):
         if cnt > 0 and cnt % 50 == 0:
             sleep_secs = 7
             msgt('Sleeping for %s seconds' % sleep_secs)
             time.sleep(sleep_secs)
-            
-        dv_params = {
-                     "alias":"ptest_%s" % cnt,
-                     "name":"Paging Test (%s)" % cnt,
-                     "affiliation":"Affiliation value",
-                     "dataverseContacts": [
-                                     {"contactEmail": "pete@mailinator.com"}
-                                 ],
-                     "permissionRoot":True,
-                     "description":"Trying to reproduce paging bug"
-                 }
+
+        dv_params = dat.test_data_reader.get_test_animal_dataverse_params()
+        pprint(dv_params)
+
         msgt('(%s) Creating dataverse: "%s" alias: %s' % (cnt, dv_params['name'], dv_params['alias'] ))
         
         
@@ -149,9 +145,8 @@ def make_lots_of_dataverses(num_dataverses=100, start_num=1, parent_dv_alias='ro
      
 if __name__=='__main__':
     # EXAMPLE
-    make_lots_of_dataverses(num_dataverses=10000\
-                            , start_num=1084\
-                            , parent_dv_alias='rp-dv'\
-                            , publish_dataverses=False\
+    make_lots_of_dataverses(num_dataverses=1\
+                            , parent_dv_alias='root'\
+                            , publish_dataverses=True\
                         )
     

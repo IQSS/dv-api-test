@@ -7,7 +7,6 @@ from jinja2 import Environment, PackageLoader
 import requests
 
 from msg_util import *
-#from dataverse_api_link import DataverseAPILink
 from dataset_info_books import DatasetManager, DatasetInfo
 
 from temp_aliases import get_random_alias
@@ -33,7 +32,7 @@ class DatasetMaker:
         if not os.path.isfile(self.data_fname):
             raise Exception('This file does not exist! %s' % self.data_fname)
         
-        self.dataset_manager = DatasetManager(self.data_fname)
+        self.dataset_manager = DatasetManager(self.data_fname, 1, 7000)
         self.dataset_manager.process_rows()
         
     def create_dataset(self, atom_xml, parent_dataverse_alias=None):
@@ -47,7 +46,7 @@ class DatasetMaker:
             #parent_dataverse_alias = get_random_alias()
             
         # Format the url
-        api_url = '%s/dvn/api/data-deposit/v1/swordv2/collection/dataverse' % (self.dv_server)    
+        api_url = '%s/dvn/api/data-deposit/v1.1/swordv2/collection/dataverse' % (self.dv_server)
         if parent_dataverse_alias: 
             api_url = '%s/%s' % (api_url, parent_dataverse_alias)
 
@@ -63,6 +62,7 @@ class DatasetMaker:
             #prettyprint_xml(r.text)
             #msg(r.text)
             msg(r.status_code)
+            msg(r.text)
             msg('Dataset added!')
         else:
             msg('ERROR')
@@ -119,17 +119,20 @@ class DatasetMaker:
        
             
 if __name__=='__main__':
+    from settings_helper import get_setting
+
     #db_server = 'http://localhost:8080'
-    db_server = 'https://dvn-build.hmdc.harvard.edu'
+    db_server = get_setting('DATAVERSE_URL')
+    api_token = get_setting('API_TOKEN')
     dm = DatasetMaker(dv_server=db_server\
-                        , dv_auth=('admin', 'admin')\
+                        , dv_auth=(api_token, api_token)\
                         , data_fname = os.path.join('..', 'data_in', 'BX-CSV-Dump', 'BX-Books.csv')\
                         , dataverse_alias='root'
                     )
     
     print (dm.get_num_datasets())
     #msgx('done')
-    dm.add_datasets(1,5)
+    dm.add_datasets(8,1000)
     #dm.add_datasets(26083,28000)
     #dm.add_datasets(19960,25000)
     #    dm.add_datasets(1,70)
